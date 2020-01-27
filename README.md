@@ -27,3 +27,13 @@ Example contents for WatermarkJsonFile:
   "y": "h-(2*lh)"
 }
 ```
+x and y expressions above use variables from ffmpeg's drawtext filter to center the watermark 2 lines up from bottom of frame:
+
+*  h - video frame height
+*  lh - height of one line of text
+*  th - height of entire block of text (could be multiline if it contains \n)
+*  tw - width of entire block of text
+*  w - video frame width  
+  
+(see https://ffmpeg.org/ffmpeg-all.html#Syntax-2 for more info and additional variables)
+  
