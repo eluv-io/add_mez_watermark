@@ -8,6 +8,9 @@ Before running, set env vars PRIVATE_KEY and FABRIC_CONFIG_URL
 ```
 npm install
 
+export PRIVATE_KEY=0x0000000000000000000000000000000000000000000000000000000000000000
+export FABRIC_CONFIG_URL="https://main.net955210.contentfabric.io/config" # (test network)
+
 node add_mez_watermark.js mezLibId mezObjectId pathToWatermarkJsonFile
 ```
 
