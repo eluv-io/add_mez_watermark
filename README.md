@@ -4,7 +4,7 @@ Add a simple text watermark to an existing ABR Mezzanine content object
 
 Before running, set env vars PRIVATE_KEY and FABRIC_CONFIG_URL
 
-
+(substitute appropriate PRIVATE_KEY and FABRIC_CONFIG_URL below)
 ```
 npm install
 
