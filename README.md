@@ -24,10 +24,10 @@ Example contents for WatermarkJsonFile:
   "shadow_color": "black@0.5",
   "template": "PREPARED FOR $USERNAME - DO NOT DISTRIBUTE",
   "x": "(w-tw)/2",
-  "y": "h-(2*lh)"
+  "y": "h-(4*lh)"
 }
 ```
-x and y expressions above use variables from ffmpeg's drawtext filter to center the watermark 2 lines up from bottom of frame:
+x and y expressions above use variables from ffmpeg's drawtext filter to center the watermark 4 lines up from bottom of frame:
 
 *  h - video frame height
 *  lh - height of one line of text
