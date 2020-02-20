@@ -22,7 +22,7 @@ Example contents for WatermarkJsonFile:
   "font_relative_height": 0.05,
   "shadow": true,
   "shadow_color": "black@0.5",
-  "template": "PREPARED FOR $USERNAME: DO NOT DISTRIBUTE",
+  "template": "PREPARED FOR $USERNAME - DO NOT DISTRIBUTE",
   "x": "(w-tw)/2",
   "y": "h-(2*lh)"
 }
