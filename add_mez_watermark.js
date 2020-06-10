@@ -2,7 +2,7 @@ const {ElvClient} = require("elv-client-js");
 const fs = require("fs");
 
 
-const AddMezWatermark = async (mezLibId, mezObjectId, watermarkJson) => {
+const AddMezWatermark = async (mezLibId, mezObjectId, watermarkJson, offeringId) => {
 
   const client = await ElvClient.FromConfigurationUrl({
     configUrl: process.env.FABRIC_CONFIG_URL
@@ -18,26 +18,31 @@ const AddMezWatermark = async (mezLibId, mezObjectId, watermarkJson) => {
 
   console.log("Retrieving mezzanine metadata...");
 
-  metadata = await client.ContentObjectMetadata({libraryId:mezLibId, objectId: mezObjectId});
+  metadata = await client.ContentObjectMetadata({libraryId: mezLibId, objectId: mezObjectId});
 
   // read from metadata top level key 'offerings'
   if (!metadata.offerings) {
     console.log(`top level metadata key "offerings" not found`);
   }
 
-  if (!metadata.offerings.default) {
-    console.log(`top level metadata key "offerings" does not contain a "default" offering`);
+  if (!metadata.offerings[offeringId]) {
+    console.log(`top level metadata key "offerings" does not contain a "` + offeringId + `" offering`);
   }
 
-  metadata.offerings.default.simple_watermark = watermarkJson;
+  metadata.offerings[offeringId].simple_watermark = watermarkJson;
   console.log("");
   console.log("Writing metadata back to object.");
   const {write_token} = await client.EditContentObject({
     libraryId: mezLibId,
     objectId: mezObjectId
   });
-  response = await client.ReplaceMetadata({metadata: metadata, libraryId: mezLibId, objectId: mezObjectId, writeToken:write_token});
-  response = await client.FinalizeContentObject({libraryId:mezLibId, objectId: mezObjectId, writeToken: write_token});
+  response = await client.ReplaceMetadata({
+    metadata: metadata,
+    libraryId: mezLibId,
+    objectId: mezObjectId,
+    writeToken: write_token
+  });
+  response = await client.FinalizeContentObject({libraryId: mezLibId, objectId: mezObjectId, writeToken: write_token});
 
   console.log("");
   console.log("Done with AddMezWatermark call.");
@@ -47,10 +52,11 @@ const AddMezWatermark = async (mezLibId, mezObjectId, watermarkJson) => {
 const mezLibId = process.argv[2];
 const mezObjectId = process.argv[3];
 const watermarkJsonPath = process.argv[4];
+const offeringId = process.argv[5] || "default";
 
 if (!mezLibId || !mezObjectId || !watermarkJsonPath) {
   console.error(`
-Usage: node add_mez_watermark.js mezLibId mezObjectId pathToWatermarkJsonFile
+Usage: node add_mez_watermark.js mezLibId mezObjectId pathToWatermarkJsonFile [offeringId]
   
   Sample WatermarkJsonFile contents:
  
@@ -89,5 +95,6 @@ const watermarkJson = JSON.parse(fs.readFileSync(watermarkJsonPath));
 AddMezWatermark(
   mezLibId,
   mezObjectId,
-  watermarkJson
+  watermarkJson,
+  offeringId
 );
